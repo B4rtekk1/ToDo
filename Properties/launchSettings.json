@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ToDoPc (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "ToDoPc (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
