@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <Page
+        x:Class="ToDoPc.MainPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:ToDoPc"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid>
+            <Grid x:Name="TitleBar" Background="Transparent" Height="40">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+
+            <Grid>
+                <Grid.Background>
+                    <SolidColorBrush>#7128E0</SolidColorBrush>
+                </Grid.Background>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height ="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Do zrobienia" FontSize="24" Margin="5" Grid.ColumnSpan="2" Grid.Row="0"/>
+
+                    <Button x:Name="AddButton" Background="White" Grid.Row="3" Grid.Column="1" Click="Button_Click" Margin="0, 0 ,20, 20">
+                        <FontIcon Glyph="&#xE710;"/>
+                    </Button>
+
+                    <ListView x:Name="TaskListView" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="local:TaskItem">
+                                <Grid x:Name="ItemHolder" Margin="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <CheckBox IsChecked="{Binding IsCompleted}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Margin="0" Grid.Column="0"/>
+                                    <TextBlock Text="{Binding Task}" Margin="5,0,0,0" VerticalAlignment="Center" Grid.Column="1" />
+                                    <Button x:Name="EditTask" Click="EditTask_Click" Background="Transparent" BorderThickness="0" HorizontalAlignment="Right" Grid.Column="2" ToolTipService.ToolTip="Edit" DataContext="{Binding}">
+                                        <FontIcon Glyph="&#xE70F;"/>
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Page>

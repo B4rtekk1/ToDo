@@ -13,6 +13,7 @@ using Windows.ApplicationModel;
 using Microsoft.UI.Windowing;
 using Windows.UI.WindowManagement;
 using Windows.UI;
+using Windows.UI.Text;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -21,20 +22,15 @@ namespace ToDoPc
 {
     public sealed partial class MainWindow : Window
     {
-        private string filePath = "tasks.json";
-        private List<TaskItem> tasks = new List<TaskItem>();
-        private DispatcherTimer timer;
-
-
         public MainWindow()
         {
             this.InitializeComponent();
-            this.InitializeTimer();
             WindowSetup();
-            LoadTasks();
-            RefreshTasks();
+            //LoadTasks();
+            //RefreshTasks();
             Microsoft.UI.Windowing.AppWindow m_AppWindow = this.AppWindow;
             SetTitleBarColors(m_AppWindow);
+            MainFrame.Navigate(typeof(MainPage));
         }
         private bool SetTitleBarColors(Microsoft.UI.Windowing.AppWindow m_AppWindow)
         {
@@ -48,9 +44,9 @@ namespace ToDoPc
                 // Set active window colors.
                 // Note: No effect when app is running on Windows 10
                 // because color customization is not supported.
-                m_TitleBar.ForegroundColor = Colors.White;
+                m_TitleBar.ForegroundColor = Colors.Black;
                 m_TitleBar.BackgroundColor = Color.FromArgb(80, 113, 40, 224);
-                m_TitleBar.ButtonForegroundColor = Colors.White;
+                m_TitleBar.ButtonForegroundColor = Colors.Black;
                 m_TitleBar.ButtonBackgroundColor = Color.FromArgb(80, 113, 40, 224);
                 m_TitleBar.ButtonHoverForegroundColor = Colors.Gainsboro;
                 m_TitleBar.ButtonHoverBackgroundColor = Color.FromArgb(100, 130, 46, 255);
@@ -61,9 +57,11 @@ namespace ToDoPc
                 // Note: No effect when app is running on Windows 10
                 // because color customization is not supported.
                 m_TitleBar.InactiveForegroundColor = Colors.Gainsboro;
-                m_TitleBar.InactiveBackgroundColor = Colors.SeaGreen;
+                m_TitleBar.InactiveBackgroundColor = Color.FromArgb(80, 113, 40, 224);
                 m_TitleBar.ButtonInactiveForegroundColor = Colors.Gainsboro;
-                m_TitleBar.ButtonInactiveBackgroundColor = Colors.SeaGreen;
+                m_TitleBar.ButtonInactiveBackgroundColor = Color.FromArgb(80, 113, 40, 224);
+
+                m_TitleBar.ForegroundColor = Colors.Black;
 
                 m_TitleBar.IconShowOptions = IconShowOptions.HideIconAndSystemMenu;
                 return true;
@@ -79,142 +77,7 @@ namespace ToDoPc
             WindowManager.Get(this).Height = 700;
             WindowManager.Get(this).IsResizable = true;
             WindowManager.Get(this).WindowState = WindowState.Normal;
-        }
-
-        private void InitializeTimer()
-        {
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(5);
-            timer.Tick += Timer_Tick;
-            timer.Start();
-        }
-
-        private void Timer_Tick(object sender, object e)
-        {
-            //SendNotificationToast("Powiadomienie", "ok");
-        }
-
-        private void TaskListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var selectedTask = (TaskItem)TaskListView.SelectedItem;
-            if (selectedTask != null)
-            {
-                selectedTask.IsCompleted = !selectedTask.IsCompleted;
-                SaveTasks();
-                RefreshTasks();
-            }
-        }
-
-
-        private void RefreshTasks()
-        {
-            TaskListView.ItemsSource = null;
-            TaskListView.ItemsSource = tasks;
-        }
-
-        public static bool SendNotificationToast(string title, string message)
-        {
-            var xmlPayload = new string($@"
-        <toast>    
-            <visual>    
-                <binding template=""ToastGeneric"">    
-                    <text>{title}</text>
-                    <text>{message}</text>    
-                </binding>
-            </visual>  
-        </toast>");
-
-            var toast = new AppNotification(xmlPayload);
-            AppNotificationManager.Default.Show(toast);
-            return toast.Id != 0;
-        }
-
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            string taskText = TaskInput.Text;
-
-            if (!string.IsNullOrWhiteSpace(taskText))
-            {
-                var newTask = new TaskItem { Task = taskText, IsCompleted = false };
-                tasks.Add(newTask);
-
-                string jsonString = JsonConvert.SerializeObject(tasks, Newtonsoft.Json.Formatting.Indented);
-
-
-                try
-                {
-                    var file = await ApplicationData.Current.LocalFolder.CreateFileAsync(filePath, CreationCollisionOption.ReplaceExisting);
-                    await FileIO.WriteTextAsync(file, jsonString);
-                    TaskInput.Text = null;
-                    SendNotificationToast(taskText, "New tasks added");
-
-                    RefreshTasks();
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine(ex);
-
-                }
-            }
-        }
-        private async void SaveTasks()
-        {
-            string jsonString = JsonConvert.SerializeObject(tasks, Newtonsoft.Json.Formatting.Indented);
-
-            try
-            {
-                var file = await ApplicationData.Current.LocalFolder.CreateFileAsync(filePath, CreationCollisionOption.ReplaceExisting);
-                await FileIO.WriteTextAsync(file, jsonString);
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"B³¹d zapisu do pliku: {ex.Message}");
-            }
-        }
-
-
-
-        private async void LoadTasks()
-        {
-            try
-            {
-                var file = await ApplicationData.Current.LocalFolder.CreateFileAsync(filePath, CreationCollisionOption.OpenIfExists);
-                var jsonString = await FileIO.ReadTextAsync(file);
-
-                if (!string.IsNullOrWhiteSpace(jsonString))
-                {
-                    tasks = JsonConvert.DeserializeObject<List<TaskItem>>(jsonString);
-                }
-                RefreshTasks();
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"B³¹d podczas ³adowania pliku: {ex.Message}");
-            }
-        }
-
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            var checkBox = (CheckBox)sender;
-            var tastItem = (TaskItem)checkBox.DataContext;
-            tastItem.IsCompleted = true;
-            var grid = (Grid)checkBox.Parent;
-            grid.Background = new SolidColorBrush(Microsoft.UI.Colors.LightGreen);
-            SaveTasks();
-        }
-
-        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            var checkbox = (CheckBox)sender;
-            var taskItem = (TaskItem)checkbox.DataContext;
-            taskItem.IsCompleted = false;
-            var grid = (Grid)checkbox.Parent;
-            grid.Background = new SolidColorBrush(Microsoft.UI.Colors.Transparent);
-            SaveTasks();
-        }
-
-        private void EditTask_Click(object sender, RoutedEventArgs e)
-        {
+            //AddButton.Background = new SolidColorBrush(Color.FromArgb(58, 75, 27, 148));
 
         }
     }
@@ -224,5 +87,8 @@ namespace ToDoPc
     {
         public string Task { get; set; }
         public bool IsCompleted { get; set; }
+        public DateTime DueDate { get; set; }  
+        public string Category { get; set; }   
+        public string Description { get; set; }
     }
 }

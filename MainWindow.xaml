@@ -11,55 +11,6 @@
 
     <Frame x:Name="MainFrame">
 
-        <Grid>
-            <Grid x:Name="TitleBar" Background="Transparent" Height="40">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-            </Grid>
-
-            <Grid>
-                <Grid.Background>
-                    <SolidColorBrush>#7128E0</SolidColorBrush>
-                </Grid.Background>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height ="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Text="Do zrobienia" FontSize="24" Margin="5" Grid.ColumnSpan="2" Grid.Row="0"/>
-                    <TextBox x:Name="TaskInput" PlaceholderText="Pisz tutaj..." Margin="10" Grid.Column="0" Grid.Row="1"/>
-                    <Button Click="Button_Click" Margin="0, 0 , 10, 0" Grid.Column="1" Grid.Row="1" Background="Transparent" BorderThickness="0" ToolTipService.ToolTip="Add">
-                        <FontIcon Glyph="&#xE710;"/>
-                    </Button>
-                    <ListView x:Name="TaskListView" Grid.Row="2" Grid.ColumnSpan="2">
-                        <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="local:TaskItem">
-                                <Grid x:Name="ItemHolder" Margin="5">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <CheckBox IsChecked="{Binding IsCompleted}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Margin="0" Grid.Column="0"/>
-                                    <TextBlock Text="{Binding Task}" Margin="5,0,0,0" VerticalAlignment="Center" Grid.Column="1" />
-                                    <Button x:Name="EditTask" Click="EditTask_Click" Background="Transparent" BorderThickness="0" HorizontalAlignment="Right" Grid.Column="2" ToolTipService.ToolTip="Edit">
-                                        <FontIcon Glyph="&#xE70F;"/>
-                                    </Button>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </Grid>
-            </Grid>
-        </Grid>
+        
     </Frame>
 </Window>

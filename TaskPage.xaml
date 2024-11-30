@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="ToDoPc.TaskPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ToDoPc"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Padding="20">
+        <StackPanel Spacing="20">
+            <!-- Pole do wprowadzenia nazwy zadania -->
+            <TextBox x:Name="TaskNameTextBox" Header="Task Name" PlaceholderText="Enter task name" />
+
+            <!-- Pole do wprowadzenia opisu zadania -->
+            <TextBox x:Name="TaskDescriptionTextBox" Header="Task Description" PlaceholderText="Enter task description" />
+
+            <!-- Pole do ustawienia czasu wykonania zadania -->
+            <DatePicker x:Name="TaskTimePicker" Header="Task Time" />
+
+            <!-- Lista rozwijana do wyboru kategorii -->
+            <ComboBox x:Name="TaskCategoryComboBox" Header="Category">
+                <ComboBoxItem Content="Work" />
+                <ComboBoxItem Content="Personal" />
+                <ComboBoxItem Content="Shopping" />
+                <ComboBoxItem Content="Other" />
+            </ComboBox>
+
+            <!-- Przycisk do zapisania zadania -->
+            <Button x:Name="SaveTask" Content="Save Task" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SaveTask_Click_1"/>
+            <Button x:Name="CancelButton" Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Center" Click="CancelButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>
