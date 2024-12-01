@@ -26,34 +26,44 @@ namespace ToDoPc
         private TaskItem _task;
         
 
-        public TaskPage(TaskItem task)
+        public TaskPage()
         {
             this.InitializeComponent();
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            if (e.Parameter is TaskItem taskItem)
+            {
+                LoadToForms(taskItem);   
+
+            }
+        }
+        private void LoadToForms(TaskItem task)
+        {
             _task = task;
             TaskNameTextBox.Text = _task.Task;
-            TaskDescriptionTextBox.Text = _task.Description;
-            TaskTimePicker.Date = _task.DueDate;
-            //_tasks = tasksList;
+            TaskNameTextBox.SelectionStart = TaskNameTextBox.Text.Length;
+            string text = _task.Description;
+            TaskDescriptionTextBox.Document.SetText(Microsoft.UI.Text.TextSetOptions.None, text);
+            TaskTimePicker.SelectedDates.Add(_task.DueDate);
         }
 
 
         private void SaveTask_Click_1(object sender, RoutedEventArgs e)
         {
 
-            // Pobranie danych z kontrolek
             string taskName = TaskNameTextBox.Text;
-            string taskDescription = TaskDescriptionTextBox.Text;
-            DateTime taskTime = TaskTimePicker.Date.DateTime;
+            string taskDescription;
+            TaskDescriptionTextBox.Document.GetText(Microsoft.UI.Text.TextGetOptions.None, out taskDescription);
+            DateTime taskTime = TaskTimePicker.SelectedDates[0].Date;
             string taskCategory = (TaskCategoryComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
 
-            // Walidacja danych (np. czy nazwa zadania nie jest pusta)
             if (string.IsNullOrEmpty(taskName))
             {
-                // Pokazanie komunikatu o b³êdzie lub proœba o wpisanie nazwy
                 return;
             }
-
-            // Mo¿esz teraz zapisaæ dane do modelu lub bazy danych
             var newTask = new TaskItem
             {
                 Task = taskName,
@@ -61,11 +71,11 @@ namespace ToDoPc
                 DueDate = taskTime,
                 IsCompleted = false,
                 Category = "dw"
-                //Category = taskCategory
             };
 
-            MainPage.tasks.Remove(_task);
+
             MainPage.tasks.Add(newTask);
+
 
             Frame.GoBack();
         }

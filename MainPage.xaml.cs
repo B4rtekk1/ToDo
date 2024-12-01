@@ -32,7 +32,6 @@ namespace ToDoPc
     {
         private string filePath = "tasks.json";
         public static List<TaskItem> tasks = new List<TaskItem>();
-        //private DispatcherTimer timer;
 
 
         public MainPage()
@@ -79,6 +78,12 @@ namespace ToDoPc
             return toast.Id != 0;
         }
 
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            SaveTasks();
+        }
+
         private async void SaveTasks()
         {
             string jsonString = JsonConvert.SerializeObject(tasks, Newtonsoft.Json.Formatting.Indented);
@@ -118,12 +123,13 @@ namespace ToDoPc
                     TaskItem task = new TaskItem()
                     {
                         IsCompleted = false,
-                        Description = "Task",
-                        Task = "Task",
+                        Description = "New task",
+                        Task = "New task",
                         DueDate = DateTime.Now,
-                        Category = "Task"
+                        Category = "New task"
                     };
                     tasks.Add(task);
+                    SaveTasks();
                 }
                 RefreshTasks();
             }
@@ -140,7 +146,6 @@ namespace ToDoPc
             tastItem.IsCompleted = true;
             var grid = (Grid)checkBox.Parent;
             var textblock = (TextBlock)grid.Children[1];
-            //grid.Background = new SolidColorBrush(Microsoft.UI.Colors.LightGreen);
             textblock.TextDecorations = Windows.UI.Text.TextDecorations.Strikethrough;
             SaveTasks();
         }
@@ -152,8 +157,7 @@ namespace ToDoPc
             taskItem.IsCompleted = false;
             var grid = (Grid)checkbox.Parent;
             var textblock = (TextBlock)grid.Children[1];
-            textblock.TextDecorations = Windows.UI.Text.TextDecorations.Strikethrough;
-            //grid.Background = new SolidColorBrush(Microsoft.UI.Colors.Transparent);
+            textblock.TextDecorations = Windows.UI.Text.TextDecorations.None;
             SaveTasks();
         }
 
@@ -165,7 +169,8 @@ namespace ToDoPc
         private void EditTask(TaskItem tastitem)
         {
             TaskItem taskItem = tastitem;
-            Frame.Navigate(typeof(TaskPage));
+            Frame.Navigate(typeof(TaskPage), taskItem);
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -173,13 +178,13 @@ namespace ToDoPc
             var taskItem = new TaskItem()
             {
                 IsCompleted = false,
-                Task = "Task",
-                Description = "Task",
+                Task = "New task",
+                Description = "New task",
                 DueDate = DateTime.Now,
-                Category = "Task"
+                Category = "New task"
             };
 
-            tasks.Add(taskItem);
+            //tasks.Add(taskItem);
 
             EditTask(taskItem);
         }

@@ -26,10 +26,9 @@ namespace ToDoPc
         {
             this.InitializeComponent();
             WindowSetup();
-            //LoadTasks();
-            //RefreshTasks();
             Microsoft.UI.Windowing.AppWindow m_AppWindow = this.AppWindow;
             SetTitleBarColors(m_AppWindow);
+            MainFrame.Background = new SolidColorBrush(Color.FromArgb(100, 130, 46, 255));
             MainFrame.Navigate(typeof(MainPage));
         }
         private bool SetTitleBarColors(Microsoft.UI.Windowing.AppWindow m_AppWindow)
@@ -77,7 +76,6 @@ namespace ToDoPc
             WindowManager.Get(this).Height = 700;
             WindowManager.Get(this).IsResizable = true;
             WindowManager.Get(this).WindowState = WindowState.Normal;
-            //AddButton.Background = new SolidColorBrush(Color.FromArgb(58, 75, 27, 148));
 
         }
     }

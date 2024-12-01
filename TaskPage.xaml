@@ -9,18 +9,17 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Padding="20">
+    <Grid Padding="20" x:Name="EditGrid">
+        <Grid.Background>
+            #7128E0
+        </Grid.Background>
         <StackPanel Spacing="20">
-            <!-- Pole do wprowadzenia nazwy zadania -->
             <TextBox x:Name="TaskNameTextBox" Header="Task Name" PlaceholderText="Enter task name" />
 
-            <!-- Pole do wprowadzenia opisu zadania -->
-            <TextBox x:Name="TaskDescriptionTextBox" Header="Task Description" PlaceholderText="Enter task description" />
+            <RichEditBox x:Name="TaskDescriptionTextBox" Header="Task Description" PlaceholderText="Enter task description" Height="100" MaxHeight="100" />
 
-            <!-- Pole do ustawienia czasu wykonania zadania -->
-            <DatePicker x:Name="TaskTimePicker" Header="Task Time" />
+            <CalendarView x:Name="TaskTimePicker" SelectionMode="Single" IsGroupLabelVisible="True" Language="en" CalendarIdentifier="GregorianCalendar"/>
 
-            <!-- Lista rozwijana do wyboru kategorii -->
             <ComboBox x:Name="TaskCategoryComboBox" Header="Category">
                 <ComboBoxItem Content="Work" />
                 <ComboBoxItem Content="Personal" />
@@ -28,7 +27,6 @@
                 <ComboBoxItem Content="Other" />
             </ComboBox>
 
-            <!-- Przycisk do zapisania zadania -->
             <Button x:Name="SaveTask" Content="Save Task" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SaveTask_Click_1"/>
             <Button x:Name="CancelButton" Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Center" Click="CancelButton_Click"/>
         </StackPanel>
