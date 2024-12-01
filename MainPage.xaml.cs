@@ -117,10 +117,6 @@ namespace ToDoPc
                 {
                     tasks = JsonConvert.DeserializeObject<List<TaskItem>>(jsonString);
 
-                    foreach (var task in tasks)
-                    {
-                        task.Task = task.Task.ToUpper();
-                    }
 
                 }
                 /*else
@@ -184,7 +180,7 @@ namespace ToDoPc
             {
                 IsCompleted = false,
                 Task = "New task",
-                Description = "New task3",
+                Description = "New task",
                 DueDate = DateTime.Now,
                 Category = "New task3"
             };

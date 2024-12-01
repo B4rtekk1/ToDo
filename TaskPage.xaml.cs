@@ -62,7 +62,7 @@ namespace ToDoPc
             }
             string taskCategory = (TaskCategoryComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
 
-            if (string.IsNullOrEmpty(taskName))
+            if (string.IsNullOrWhiteSpace(taskName) || string.IsNullOrWhiteSpace(taskCategory) || string.IsNullOrWhiteSpace(taskDescription))
             {
                 return;
             }
@@ -72,7 +72,7 @@ namespace ToDoPc
                 Description = taskDescription,
                 DueDate = taskTime,
                 IsCompleted = false,
-                Category = "dw"
+                Category = taskCategory
             };
 
 
@@ -84,12 +84,17 @@ namespace ToDoPc
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
+            if (_task.Equals(MainPage.tasks[MainPage.tasks.Count - 1]) && _task.Category=="New task3")
+            {
+                MainPage.tasks.RemoveAt(MainPage.tasks.Count - 1);
+            }
             Frame.Navigate(typeof(MainPage));
         }
 
         private void TaskNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(string.IsNullOrEmpty(TaskNameTextBox.Text))
+            string trimmedTextBox = TaskNameTextBox.Text.Trim();
+            if(string.IsNullOrEmpty(trimmedTextBox))
             {
                 TaskNameTextBox.BorderThickness = new Microsoft.UI.Xaml.Thickness(1);
                 TaskNameTextBox.BorderBrush = new SolidColorBrush(Windows.UI.Color.FromArgb(100, 255, 0, 0));
@@ -175,6 +180,12 @@ namespace ToDoPc
                 TaskDescriptionTextBox.BorderBrush = null;
                 //ErrorMessage.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private void DeleteTask_Click(object sender, RoutedEventArgs e)
+        {
+            MainPage.tasks.Remove(_task);
+            Frame.Navigate(typeof(MainPage));
         }
     }
 }

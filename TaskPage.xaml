@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Page
     x:Class="ToDoPc.TaskPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -13,25 +12,45 @@
         <StackPanel Spacing="20">
             <StackPanel x:Name="TaskEntryArea">
                 <TextBox x:Name="TaskNameTextBox" Header="Task Name" PlaceholderText="Enter task name" TextChanged="TaskNameTextBox_TextChanged"/>
-                <TextBlock x:Name="ErrorMessage" Text="Task name can't be empty" Opacity="0" Visibility="Visible" FontSize="10" IsColorFontEnabled="True" Foreground="Red"></TextBlock>
+                <TextBlock x:Name="ErrorMessage" Text="Task name can't be empty" Opacity="0" Visibility="Visible" FontSize="10" IsColorFontEnabled="True" Foreground="Red"/>
             </StackPanel>
             <StackPanel>
                 <RichEditBox x:Name="TaskDescriptionTextBox" Header="Task Description" TextChanged="TaskDescriptionTextBox_TextChanged" PlaceholderText="Enter task description" Height="100" MaxHeight="100" />
-                <TextBlock x:Name="ErrorMessageDescription" Text="Description can't be empty" Visibility="Visible" FontSize="10" IsColorFontEnabled="True" Foreground="Red"/>
+                <TextBlock x:Name="ErrorMessageDescription" Opacity="0" Text="Description can't be empty" Visibility="Visible" FontSize="10" IsColorFontEnabled="True" Foreground="Red"/>
             </StackPanel>
-            <StackPanel HorizontalAlignment="Left">
-                <TextBlock x:Name="CalendarTextBlock" Text="Select a due date" Margin="0, 0, 0, 10"/>
-                <CalendarView x:Name="TaskTimePicker"  SelectionMode="Single" IsGroupLabelVisible="True" Language="en" CalendarIdentifier="GregorianCalendar"/>
-            </StackPanel>
-            <ComboBox x:Name="TaskCategoryComboBox" Header="Category">
-                <ComboBoxItem Content="Work" />
-                <ComboBoxItem Content="Personal" />
-                <ComboBoxItem Content="Shopping" />
-                <ComboBoxItem Content="Other" />
-            </ComboBox>
 
-            <Button x:Name="SaveTask" Content="Save Task" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SaveTask_Click_1"/>
-            <Button x:Name="CancelButton" Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Center" Click="CancelButton_Click"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel HorizontalAlignment="Left" Grid.Column="0">
+                    <TextBlock x:Name="CalendarTextBlock" Text="Select a due date" Margin="0, 0, 0, 10"/>
+                    <CalendarView x:Name="TaskTimePicker" SelectionMode="Single" IsGroupLabelVisible="True" Language="en" CalendarIdentifier="GregorianCalendar"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Spacing="20">
+                    <ComboBox x:Name="TaskCategoryComboBox" Header="Category" Width="270" Margin="20, 0, 10, 0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+                        <ComboBoxItem Content="Work" />
+                        <ComboBoxItem Content="Personal" />
+                        <ComboBoxItem Content="Shopping" />
+                        <ComboBoxItem Content="School"/>
+                        <ComboBoxItem Content="Other" />
+                    </ComboBox>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10">
+                        <Button x:Name="SaveTask" Background="Transparent" BorderThickness="0" Click="SaveTask_Click_1">
+                            <FontIcon Glyph="&#xE74E;" />
+                        </Button>
+                        <Button x:Name="CancelButton" BorderThickness="0" Click="CancelButton_Click" Background="Transparent">
+                            <FontIcon Glyph="&#xE711;" />
+                        </Button>
+                        <Button x:Name="DeleteTask" Background="Transparent" BorderThickness="0" Click="DeleteTask_Click">
+                            <FontIcon Glyph="&#xE74D;" />
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
         </StackPanel>
     </Grid>
 </Page>
