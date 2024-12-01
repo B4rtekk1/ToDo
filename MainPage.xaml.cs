@@ -30,7 +30,7 @@ namespace ToDoPc
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private string filePath = "tasks.json";
+        public static string filePath = "tasks.json";
         public static List<TaskItem> tasks = new List<TaskItem>();
 
 
@@ -78,13 +78,13 @@ namespace ToDoPc
             return toast.Id != 0;
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            base.OnNavigatedFrom(e);
-            SaveTasks();
+            base.OnNavigatedTo(e);
+            //SaveTasks();
         }
 
-        private async void SaveTasks()
+        public static async void SaveTasks()
         {
             string jsonString = JsonConvert.SerializeObject(tasks, Newtonsoft.Json.Formatting.Indented);
 
@@ -106,6 +106,11 @@ namespace ToDoPc
             try
             {
                 var file = await ApplicationData.Current.LocalFolder.CreateFileAsync(filePath, CreationCollisionOption.OpenIfExists);
+
+                if(file == null)
+                {
+                    System.Diagnostics.Debug.WriteLine("Plik nie istnieje");
+                }
                 var jsonString = await FileIO.ReadTextAsync(file);
 
                 if (!string.IsNullOrWhiteSpace(jsonString))
@@ -118,7 +123,7 @@ namespace ToDoPc
                     }
 
                 }
-                else
+                /*else
                 {
                     TaskItem task = new TaskItem()
                     {
@@ -130,7 +135,7 @@ namespace ToDoPc
                     };
                     tasks.Add(task);
                     SaveTasks();
-                }
+                }*/
                 RefreshTasks();
             }
             catch (Exception ex)
@@ -179,12 +184,12 @@ namespace ToDoPc
             {
                 IsCompleted = false,
                 Task = "New task",
-                Description = "New task",
+                Description = "New task3",
                 DueDate = DateTime.Now,
-                Category = "New task"
+                Category = "New task3"
             };
 
-            //tasks.Add(taskItem);
+            tasks.Add(taskItem);
 
             EditTask(taskItem);
         }

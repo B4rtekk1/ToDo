@@ -26,9 +26,6 @@ namespace ToDoPc
         {
             this.InitializeComponent();
             WindowSetup();
-            Microsoft.UI.Windowing.AppWindow m_AppWindow = this.AppWindow;
-            SetTitleBarColors(m_AppWindow);
-            MainFrame.Background = new SolidColorBrush(Color.FromArgb(100, 130, 46, 255));
             MainFrame.Navigate(typeof(MainPage));
         }
         private bool SetTitleBarColors(Microsoft.UI.Windowing.AppWindow m_AppWindow)

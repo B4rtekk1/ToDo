@@ -10,16 +10,19 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid Padding="20" x:Name="EditGrid">
-        <Grid.Background>
-            #7128E0
-        </Grid.Background>
         <StackPanel Spacing="20">
-            <TextBox x:Name="TaskNameTextBox" Header="Task Name" PlaceholderText="Enter task name" />
-
-            <RichEditBox x:Name="TaskDescriptionTextBox" Header="Task Description" PlaceholderText="Enter task description" Height="100" MaxHeight="100" />
-
-            <CalendarView x:Name="TaskTimePicker" SelectionMode="Single" IsGroupLabelVisible="True" Language="en" CalendarIdentifier="GregorianCalendar"/>
-
+            <StackPanel x:Name="TaskEntryArea">
+                <TextBox x:Name="TaskNameTextBox" Header="Task Name" PlaceholderText="Enter task name" TextChanged="TaskNameTextBox_TextChanged"/>
+                <TextBlock x:Name="ErrorMessage" Text="Task name can't be empty" Opacity="0" Visibility="Visible" FontSize="10" IsColorFontEnabled="True" Foreground="Red"></TextBlock>
+            </StackPanel>
+            <StackPanel>
+                <RichEditBox x:Name="TaskDescriptionTextBox" Header="Task Description" TextChanged="TaskDescriptionTextBox_TextChanged" PlaceholderText="Enter task description" Height="100" MaxHeight="100" />
+                <TextBlock x:Name="ErrorMessageDescription" Text="Description can't be empty" Visibility="Visible" FontSize="10" IsColorFontEnabled="True" Foreground="Red"/>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Left">
+                <TextBlock x:Name="CalendarTextBlock" Text="Select a due date" Margin="0, 0, 0, 10"/>
+                <CalendarView x:Name="TaskTimePicker"  SelectionMode="Single" IsGroupLabelVisible="True" Language="en" CalendarIdentifier="GregorianCalendar"/>
+            </StackPanel>
             <ComboBox x:Name="TaskCategoryComboBox" Header="Category">
                 <ComboBoxItem Content="Work" />
                 <ComboBoxItem Content="Personal" />

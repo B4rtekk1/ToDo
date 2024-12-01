@@ -18,11 +18,8 @@
                 </Grid.ColumnDefinitions>
             </Grid>
 
+        <Grid>
             <Grid>
-                <Grid.Background>
-                    <SolidColorBrush>#7128E0</SolidColorBrush>
-                </Grid.Background>
-                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
