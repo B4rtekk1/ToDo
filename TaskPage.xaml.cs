@@ -17,6 +17,7 @@ namespace ToDoPc
     {
         private TaskItem _task;
         private MainPage _mainPage;
+        private Storyboard _storyboardTask, _storyboardDescription;
         
 
         public TaskPage()
@@ -47,10 +48,18 @@ namespace ToDoPc
             string text = _task.Description;
             TaskDescriptionTextBox.Document.SetText(Microsoft.UI.Text.TextSetOptions.None, text);
             TaskTimePicker.SelectedDates.Add(_task.DueDate);
+            foreach (var item in TaskCategoryComboBox.Items)
+            {
+                if (item is ComboBoxItem comboBoxItem && comboBoxItem.Content.ToString() == _task.Category)
+                {
+                    TaskCategoryComboBox.SelectedItem = comboBoxItem;
+                    break;
+                }
+            }
         }
 
 
-        private async void SaveTask_Click_1(object sender, RoutedEventArgs e)
+        private void SaveTask_Click_1(object sender, RoutedEventArgs e)
         {
             DateTime taskTime = DateTime.Now;
             string taskName = TaskNameTextBox.Text;
@@ -62,7 +71,7 @@ namespace ToDoPc
             }
             string taskCategory = (TaskCategoryComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
 
-            if (string.IsNullOrWhiteSpace(taskName) || string.IsNullOrWhiteSpace(taskCategory) || string.IsNullOrWhiteSpace(taskDescription))
+            if (string.IsNullOrEmpty(taskName) || string.IsNullOrEmpty(taskCategory) || string.IsNullOrEmpty(taskDescription))
             {
                 return;
             }
@@ -91,10 +100,13 @@ namespace ToDoPc
             Frame.Navigate(typeof(MainPage));
         }
 
+
         private void TaskNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            _storyboardTask?.Stop();
+            TaskNameTextBox.BorderBrush = null;
             string trimmedTextBox = TaskNameTextBox.Text.Trim();
-            if(string.IsNullOrEmpty(trimmedTextBox))
+            if (string.IsNullOrEmpty(trimmedTextBox))
             {
                 TaskNameTextBox.BorderThickness = new Microsoft.UI.Xaml.Thickness(1);
                 TaskNameTextBox.BorderBrush = new SolidColorBrush(Windows.UI.Color.FromArgb(100, 255, 0, 0));
@@ -104,31 +116,31 @@ namespace ToDoPc
                 {
                     From = 0,
                     To = 1,
-                    Duration = new Duration(TimeSpan.FromMilliseconds(500))
+                    Duration = new Duration(TimeSpan.FromMilliseconds(350))
                 };
                 Storyboard.SetTarget(fadeInAnimation, ErrorMessage);
                 Storyboard.SetTargetProperty(fadeInAnimation, "Opacity");
 
-                Storyboard storyboard = new Storyboard();
-                storyboard.Children.Add(fadeInAnimation);
-
-                storyboard.Begin();
+                _storyboardTask = new Storyboard();
+                _storyboardTask.Children.Add(fadeInAnimation);
+                _storyboardTask.Completed += (s, ev) => _storyboardTask = null;
+                _storyboardTask.Begin();
             }
-            else
+            else if (ErrorMessage.Opacity == 1)
             {
                 DoubleAnimation fadeOutAnimation = new DoubleAnimation()
                 {
                     From = 1,
                     To = 0,
-                    Duration = new Duration(TimeSpan.FromMilliseconds(500))
+                    Duration = new Duration(TimeSpan.FromMilliseconds(350))
                 };
                 Storyboard.SetTarget(fadeOutAnimation, ErrorMessage);
                 Storyboard.SetTargetProperty(fadeOutAnimation, "Opacity");
 
-                Storyboard storyboard = new Storyboard();
-                storyboard.Children.Add(fadeOutAnimation);
-
-                storyboard.Begin();
+                _storyboardTask = new Storyboard();
+                _storyboardTask.Children.Add(fadeOutAnimation);
+                _storyboardTask.Completed += (s, ev) => _storyboardTask = null;
+                _storyboardTask.Begin();
 
                 TaskNameTextBox.BorderThickness = new Microsoft.UI.Xaml.Thickness(1);
                 TaskNameTextBox.BorderBrush = null;
@@ -138,11 +150,12 @@ namespace ToDoPc
 
         private void TaskDescriptionTextBox_TextChanged(object sender, RoutedEventArgs e)
         {
+            _storyboardDescription?.Stop();
+            TaskDescriptionTextBox.BorderBrush = null;
             TaskDescriptionTextBox.Document.GetText(Microsoft.UI.Text.TextGetOptions.None, out string taskDescription);
             string trimmedDescription = taskDescription.Trim();
             if (string.IsNullOrEmpty(trimmedDescription))
             {
-                TaskDescriptionTextBox.BorderThickness = new Microsoft.UI.Xaml.Thickness(1);
                 TaskDescriptionTextBox.BorderBrush = new SolidColorBrush(Windows.UI.Color.FromArgb(100, 255, 0, 0));
                 ErrorMessageDescription.Visibility = Visibility.Visible;
 
@@ -155,12 +168,12 @@ namespace ToDoPc
                 Storyboard.SetTarget(fadeInAnimation, ErrorMessageDescription);
                 Storyboard.SetTargetProperty(fadeInAnimation, "Opacity");
 
-                Storyboard storyboard = new Storyboard();
-                storyboard.Children.Add(fadeInAnimation);
-
-                storyboard.Begin();
+                _storyboardDescription = new Storyboard();
+                _storyboardDescription.Children.Add(fadeInAnimation);
+                _storyboardDescription.Completed += (s, ev) => _storyboardDescription = null;
+                _storyboardDescription.Begin();
             }
-            else
+            else if(ErrorMessageDescription.Opacity == 1) 
             {
                 DoubleAnimation fadeOutAnimation = new DoubleAnimation()
                 {
@@ -171,21 +184,39 @@ namespace ToDoPc
                 Storyboard.SetTarget(fadeOutAnimation, ErrorMessageDescription);
                 Storyboard.SetTargetProperty(fadeOutAnimation, "Opacity");
 
-                Storyboard storyboard = new Storyboard();
-                storyboard.Children.Add(fadeOutAnimation);
+                _storyboardDescription = new Storyboard();
+                _storyboardDescription.Children.Add(fadeOutAnimation);
+                _storyboardDescription.Completed += (s, ev) => _storyboardDescription = null;
+                _storyboardDescription.Begin();
 
-                storyboard.Begin();
-
-                TaskDescriptionTextBox.BorderThickness = new Microsoft.UI.Xaml.Thickness(1);
                 TaskDescriptionTextBox.BorderBrush = null;
                 //ErrorMessage.Visibility = Visibility.Collapsed;
             }
         }
 
-        private void DeleteTask_Click(object sender, RoutedEventArgs e)
+        private async void DeleteTask_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.tasks.Remove(_task);
-            Frame.Navigate(typeof(MainPage));
+
+            ContentDialog contentDialog = new ContentDialog
+            {
+                XamlRoot = this.XamlRoot,
+                Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
+                Title = "This action cannot be undone. \nContinue?",
+                PrimaryButtonText = "Delete",
+                SecondaryButtonText = "Cancel",
+                DefaultButton = ContentDialogButton.Secondary,
+                Content = "Are you sure you want to delete this task?"
+            };
+
+            var result = await contentDialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                MainPage.tasks.Remove(_task);
+                Frame.Navigate(typeof(MainPage));
+            }
         }
+
+
     }
 }

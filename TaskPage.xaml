@@ -48,6 +48,7 @@
                         <Button x:Name="DeleteTask" Background="Transparent" BorderThickness="0" Click="DeleteTask_Click">
                             <FontIcon Glyph="&#xE74D;" />
                         </Button>
+                        
                     </StackPanel>
                 </StackPanel>
             </Grid>
