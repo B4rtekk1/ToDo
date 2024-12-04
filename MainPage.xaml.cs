@@ -81,7 +81,7 @@ namespace ToDoPc
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            //SaveTasks();
+            LoadTasks();
         }
 
         public static async void SaveTasks()
