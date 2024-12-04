@@ -30,7 +30,7 @@
                     <CalendarView x:Name="TaskTimePicker" SelectionMode="Single" IsGroupLabelVisible="True" Language="en" CalendarIdentifier="GregorianCalendar"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Spacing="20">
-                    <ComboBox x:Name="TaskCategoryComboBox" Header="Category" Width="270" Margin="20, 0, 10, 0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+                    <ComboBox x:Name="TaskCategoryComboBox" Header="Category" Width="265" Margin="20, 0, 10, 0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
                         <ComboBoxItem Content="Work" />
                         <ComboBoxItem Content="Personal" />
                         <ComboBoxItem Content="Shopping" />
@@ -46,6 +46,9 @@
                             <FontIcon Glyph="&#xE711;" />
                         </Button>
                         <Button x:Name="DeleteTask" Background="Transparent" BorderThickness="0" Click="DeleteTask_Click">
+                            <Button.Resources>
+                                <Color x:Key="ButtonBackroundPointedOver">Red</Color>
+                            </Button.Resources>
                             <FontIcon Glyph="&#xE74D;" />
                         </Button>
                         

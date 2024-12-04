@@ -214,6 +214,7 @@ namespace ToDoPc
             if (result == ContentDialogResult.Primary)
             {
                 MainPage.tasks.Remove(_task);
+                MainPage.SaveTasks();
                 Frame.Navigate(typeof(MainPage));
             }
 
