@@ -24,16 +24,16 @@ namespace ToDoPc
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
-    public partial class App : Application
+    public sealed partial class App : Application
     {
+        public static Window MainWindow { get; private set; }
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
-        }
+            this.InitializeComponent();        }
 
         /// <summary>
         /// Invoked when the application is launched.
@@ -42,6 +42,7 @@ namespace ToDoPc
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
             m_window = new MainWindow();
+            MainWindow = m_window;
             m_window.Activate();
         }
 

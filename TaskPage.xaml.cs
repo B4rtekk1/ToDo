@@ -5,6 +5,10 @@ using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using Windows.Media.Playback;
+using Windows.Storage.Pickers;
+using Windows.Storage;
+using WinRT.Interop;
+using static System.Net.Mime.MediaTypeNames;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -195,13 +199,40 @@ namespace ToDoPc
             }
         }
 
+        private void DeleteTask_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            DeleteTask.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Red);
+
+        }
+
+        private async void LoadFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            var openPicker = new Windows.Storage.Pickers.FileOpenPicker();
+
+            var window = App.MainWindow;
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+            WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hwnd);
+
+            openPicker.ViewMode = PickerViewMode.Thumbnail;
+            openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            openPicker.FileTypeFilter.Add(".txt");
+            
+            var file = await openPicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                string text = await Windows.Storage.FileIO.ReadTextAsync(file);
+                TaskDescriptionTextBox.Document.SetText(Microsoft.UI.Text.TextSetOptions.None, text);
+            }
+
+        }
+
         private async void DeleteTask_Click(object sender, RoutedEventArgs e)
         {
 
             ContentDialog contentDialog = new ContentDialog
             {
                 XamlRoot = this.XamlRoot,
-                Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
+                Style = Microsoft.UI.Xaml.Application.Current.Resources["DefaultContentDialogStyle"] as Style,
                 Title = "This action cannot be undone. \nContinue?",
                 PrimaryButtonText = "Delete",
                 SecondaryButtonText = "Cancel",
