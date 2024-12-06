@@ -19,6 +19,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 using WinUIEx;
+using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -32,6 +33,24 @@ namespace ToDoPc
     {
         public static string filePath = "tasks.json";
         public static List<TaskItem> tasks = new List<TaskItem>();
+        private List<string> autoSuggestWords = new List<string>()
+        {
+            "project", "meeting", "report", "review", "update", "design", "development", "test",
+    "fix", "debug", "implementation", "analysis", "documentation", "call", "email",
+    "plan", "schedule", "presentation", "research", "idea", "client", "deadline",
+    "task", "goal", "strategy", "feature", "requirement", "issue", "discussion",
+    "testcase", "prototype", "feedback", "optimization", "deployment", "build",
+    "version", "release", "patch", "integration", "configuration", "setup", "launch",
+    "training", "demo", "maintenance", "support", "upgrade", "testing", "bugfix",
+    "workflow", "priority", "backlog", "meetingnotes", "tasklist", "milestone",
+    "roadmap", "session", "team", "documentationreview", "presentationprep",
+    "code", "sprint", "retrospective", "agenda", "workshop", "brainstorm", "actionitem",
+    "delivery", "followup", "proposal", "draft", "layout", "approval", "mockup",
+    "usability", "revision", "content", "media", "security", "performance",
+    "analysisreport", "template", "file", "overview", "summary", "handover",
+    "lessonlearned", "checklist", "assignment", "estimation", "testingplan",
+    "onboarding", "recruitment", "reviewdoc", "investigation", "metrics", "audit"
+        };
 
 
         public MainPage()
@@ -188,6 +207,39 @@ namespace ToDoPc
             tasks.Add(taskItem);
 
             EditTask(taskItem);
+        }
+
+        private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                var searchText = sender.Text.ToLower();
+
+                var filteredTasks = tasks.Where(task => task.Task.ToLower().Contains(searchText)).ToList();
+
+                TaskListView.ItemsSource = filteredTasks;
+
+                if (filteredTasks.Count == 0)
+                {
+                    TaskListView.ItemsSource = new List<TaskItem>
+            {
+                new TaskItem { Task = "No tasks found", IsCompleted = false }
+            };
+                }
+            }
+            else if (args.Reason == AutoSuggestionBoxTextChangeReason.ProgrammaticChange)
+            {
+                if (string.IsNullOrWhiteSpace(sender.Text))
+                {
+                    TaskListView.ItemsSource = tasks;
+                }
+            }
+        }
+
+
+        private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+           AutoSuggestBox1.Text = args.SelectedItem.ToString();
         }
     }
 }

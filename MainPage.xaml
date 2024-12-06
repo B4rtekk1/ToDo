@@ -31,9 +31,13 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Do zrobienia" FontSize="24" Margin="5" Grid.ColumnSpan="2" Grid.Row="0"/>
+                <AutoSuggestBox x:Name="AutoSuggestBox1" PlaceholderText="Type key word here"
+                                    TextChanged="AutoSuggestBox_TextChanged"
+                                    QueryIcon="Find"
+                                    SuggestionChosen="AutoSuggestBox_SuggestionChosen"
+                                    AutomationProperties.Name="Basic AutoSuggestBox" Margin="10"/>
 
-                    <Button x:Name="AddButton" Background="Transparent" Grid.Row="3" Grid.Column="1" Click="Button_Click" Margin="0, 0 ,20, 20" CornerRadius="90" Height="48" Width="48" BorderThickness="0">
+                <Button x:Name="AddButton" Background="Transparent" Grid.Row="3" Grid.Column="1" Click="Button_Click" Margin="0, 0 ,20, 20" CornerRadius="90" Height="48" Width="48" BorderThickness="0">
                         <FontIcon Glyph="&#xE710;"/>
                     </Button>
 
