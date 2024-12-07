@@ -217,14 +217,15 @@ namespace ToDoPc
 
                 var filteredTasks = tasks.Where(task => task.Task.ToLower().Contains(searchText)).ToList();
 
-                TaskListView.ItemsSource = filteredTasks;
-
                 if (filteredTasks.Count == 0)
                 {
-                    TaskListView.ItemsSource = new List<TaskItem>
-            {
-                new TaskItem { Task = "No tasks found", IsCompleted = false }
-            };
+                    TaskListView.ItemsSource = null;
+                    NoTasksFoundTextBlock.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    TaskListView.ItemsSource = filteredTasks;
+                    NoTasksFoundTextBlock.Visibility = Visibility.Collapsed;
                 }
             }
             else if (args.Reason == AutoSuggestionBoxTextChangeReason.ProgrammaticChange)
