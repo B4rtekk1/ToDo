@@ -8,8 +8,8 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-
+    <Grid CornerRadius="5">
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
@@ -19,11 +19,10 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- NavigationView -->
         <NavigationView x:Name="nvSample9" Width="Auto" IsPaneOpen="True"
                         PaneDisplayMode="Left" IsPaneToggleButtonVisible="False" 
-                        Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
-                        IsSettingsVisible="True" VerticalAlignment="Stretch">
+                        Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" CornerRadius="10"
+                        IsSettingsVisible="True" VerticalAlignment="Stretch" ItemInvoked="nvSample9_ItemInvoked">
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Browse" Tag="SamplePage1" Icon="Library" />
                 <NavigationViewItem Content="Track an Order" Tag="SamplePage2" Icon="Map" />
@@ -31,13 +30,14 @@
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem Content="Account" Tag="SamplePage4" Icon="Contact" />
-                <NavigationViewItem Content="Help" Tag="SamplePage5" Icon="Help" />
+                <NavigationViewItem Content="Help" Tag="SamplePage5" Icon="Help"/>
             </NavigationView.FooterMenuItems>
             <Frame x:Name="contentFrame9" />
         </NavigationView>
 
-        <!-- Główna treść (zawartość w Grid.Column="1") -->
         <Grid Grid.Column="1" Grid.Row="1">
+
+            
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -48,8 +48,11 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <!-- AutoSuggestBox i tekst "No tasks found" -->
-            <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Margin="20">
+                <Image Source="Assets/ToDoBackground.jpg" Stretch="UniformToFill" Grid.ColumnSpan="2"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" Grid.RowSpan="3"
+                   Opacity="0.75"/>
+
+                <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Margin="20">
                 <AutoSuggestBox x:Name="AutoSuggestBox1" PlaceholderText="Type key word here"
                                 TextChanged="AutoSuggestBox_TextChanged"
                                 QueryIcon="Find"
@@ -58,7 +61,6 @@
                 <TextBlock x:Name="NoTasksFoundTextBlock" Text="No tasks found" Visibility="Collapsed" Margin="10"/>
             </StackPanel>
 
-            <!-- Lista zadań (ListView) -->
             <ListView x:Name="TaskListView" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:TaskItem">
@@ -68,7 +70,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <CheckBox IsChecked="{Binding IsCompleted}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Margin="0" Grid.Column="0"/>
+                            <CheckBox IsChecked="{Binding IsCompleted}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Margin="0" Grid.Column="0" CornerRadius="30"/>
                             <TextBlock Text="{Binding Task}" TextAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Grid.Column="1" />
                             <Button x:Name="EditTask" Click="EditTask_Click" Background="Transparent" BorderThickness="0" HorizontalAlignment="Right" Grid.Column="2" ToolTipService.ToolTip="Edit" DataContext="{Binding}">
                                 <FontIcon Glyph="&#xE70F;"/>
@@ -78,7 +80,6 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <!-- Przycisk dodawania -->
             <Button x:Name="AddButton" Background="Transparent" Grid.Row="2" Grid.Column="1" Click="Button_Click" Margin="0, 20, 20, 20" CornerRadius="90" Height="48" Width="48" BorderThickness="0">
                 <FontIcon Glyph="&#xE710;"/>
             </Button>

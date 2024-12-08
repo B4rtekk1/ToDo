@@ -19,6 +19,8 @@
 		<Content Remove="Assets\favicon.ico" />
 	</ItemGroup>
 	<ItemGroup>
+		<None Remove="Assets\Background.jpg" />
+		<None Remove="Assets\ToDoBackground.jpg" />
 		<None Remove="MainPage.xaml" />
 		<None Remove="TaskPage.xaml" />
 	</ItemGroup>
@@ -48,6 +50,14 @@
   -->
 	<ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
 		<ProjectCapability Include="Msix" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Update="Assets\Background.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="Assets\ToDoBackground.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
 	</ItemGroup>
 	<ItemGroup>
 		<Page Update="TaskPage.xaml">

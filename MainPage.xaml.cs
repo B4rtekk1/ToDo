@@ -21,6 +21,7 @@ using Windows.Storage;
 using WinUIEx;
 using System.Threading.Tasks;
 using Windows.Devices.Bluetooth;
+using Windows.System;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -61,9 +62,7 @@ public sealed partial class MainPage : Page
         this.InitializeComponent();
         //LoadTasks();
         RefreshTasks();
-
     }
-    
 
 
     private void TaskListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -231,6 +230,17 @@ public sealed partial class MainPage : Page
     private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
     {
        AutoSuggestBox1.Text = args.SelectedItem.ToString();
+    }
+
+
+    private void nvSample9_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+    {
+        if (args.InvokedItem.ToString() == "Help")
+        {
+                var uri = new Uri("https://github.com/B4rtekk1/ToDo/issues");
+                Windows.System.Launcher.LaunchUriAsync(uri).Wait();
+            
+        }
     }
 }
 

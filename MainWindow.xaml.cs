@@ -67,8 +67,8 @@ public sealed partial class MainWindow : Window
     private void WindowSetup()
     {
         WindowManager.Get(this).IsMaximizable = true;
-        WindowManager.Get(this).Width = 600;
-        WindowManager.Get(this).Height = 700;
+        WindowManager.Get(this).Width = 800;
+        WindowManager.Get(this).Height = 800;
         WindowManager.Get(this).IsResizable = true;
         WindowManager.Get(this).WindowState = WindowState.Normal;
 
