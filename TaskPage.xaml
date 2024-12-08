@@ -21,9 +21,6 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <RichEditBox x:Name="TaskDescriptionTextBox" Header="Task Description" TextChanged="TaskDescriptionTextBox_TextChanged" PlaceholderText="Enter task description" Height="100" MaxHeight="100" Grid.Column="0"/>
-                    <Button x:Name="LoadFileButton" Background="Transparent" Click="LoadFileButton_Click" Grid.Column="1">
-                        <FontIcon Glyph="&#xE8E5;"/>
-                    </Button>
                 </Grid>
 
                 <TextBlock x:Name="ErrorMessageDescription" Opacity="0" Text="Description can't be empty" Visibility="Visible" FontSize="10" IsColorFontEnabled="True" Foreground="Red"/>
@@ -47,6 +44,7 @@
                         <ComboBoxItem Content="School"/>
                         <ComboBoxItem Content="Other" />
                     </ComboBox>
+                    <TextBlock x:Name="CategoryLabel" Text="Choose category" Foreground="Red" Margin="20, 0, 0, 0" FontSize="10"/>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10">
                         <Button x:Name="SaveTask" Background="Transparent" BorderThickness="0" Click="SaveTask_Click_1" Height="48" Width="48">
@@ -58,8 +56,12 @@
                         <Button x:Name="DeleteTask" Background="Red" BorderThickness="0" Click="DeleteTask_Click" PointerEntered="DeleteTask_PointerEntered" Height="48" Width="48">
                             <FontIcon Glyph="&#xE74D;" />
                         </Button>
-                        
+                        <Button x:Name="LoadFileButton" Background="Transparent" Click="LoadFileButton_Click" Grid.Column="1" Height="48" Width="48" BorderThickness="0">
+                            <FontIcon Glyph="&#xE8E5;"/>
+                        </Button>
+                        <StackPanel x:Name="FilesPanel" Margin="10"/>
                     </StackPanel>
+                    
                 </StackPanel>
             </Grid>
         </StackPanel>
