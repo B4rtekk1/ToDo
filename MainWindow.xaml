@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Window
     x:Class="ToDoPc.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -9,7 +8,39 @@
     mc:Ignorable="d"
     Title="ToDo">
 
-    <Frame x:Name="MainFrame">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         
-    </Frame>
+        <NavigationView 
+        x:Name="nvSample9" 
+        Width="Auto" 
+        Grid.Column="0"
+        IsPaneOpen="True"
+        PaneDisplayMode="Left" 
+        IsPaneToggleButtonVisible="False"
+        CornerRadius="10"
+        IsSettingsVisible="False"
+        IsBackButtonVisible="Collapsed"
+        VerticalAlignment="Stretch" 
+        ItemInvoked="nvSample9_ItemInvoked">
+
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="Tasks" Tag="TasksPage" Icon="List" />
+                <NavigationViewItem Content="Track an Order" Tag="TrackOrderPage" Icon="Map" />
+                <NavigationViewItem Content="Order History" Tag="OrderHistoryPage" Icon="Tag" />
+            </NavigationView.MenuItems>
+
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem Content="Account" Tag="AccountPage" Icon="Contact" />
+                <NavigationViewItem Content="Help" Tag="HelpPage" Icon="Help" />
+                <NavigationViewItem Content="Settings" Tag="SettingsPage" Icon="Setting" />
+            </NavigationView.FooterMenuItems>
+
+            <Frame x:Name="MainFrame1" />
+        </NavigationView>
+        <Frame x:Name="MainFrame" Grid.Column="1"/>
+    </Grid>
 </Window>

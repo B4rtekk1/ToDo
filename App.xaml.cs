@@ -1,51 +1,44 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Microsoft.UI.Xaml.Shapes;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+﻿using System;
+using System.Net.Mail;
+using System.Net;
+using System.Runtime.InteropServices;
+using Microsoft.UI.Xaml;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.ApplicationModel.Email;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+namespace ToDoPc;
 
-namespace ToDoPc
+public sealed partial class App : Application
 {
-    /// <summary>
-    /// Provides application-specific behavior to supplement the default Application class.
-    /// </summary>
-    public sealed partial class App : Application
+    public static Window MainWindow
     {
-        public static Window MainWindow { get; private set; }
-        /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
-        /// </summary>
-        public App()
-        {
-            this.InitializeComponent();        }
+        get; private set;
+    }
 
-        /// <summary>
-        /// Invoked when the application is launched.
-        /// </summary>
-        /// <param name="args">Details about the launch request and process.</param>
-        protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
-        {
-            m_window = new MainWindow();
-            MainWindow = m_window;
-            m_window.Activate();
-        }
+    [DllImport("user32.dll")]
+    public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
-        private Window m_window;
+    private static readonly IntPtr HWND_TOP = new IntPtr(0);
+    private const uint SWP_NOZORDER = 0x0004;
+
+    public App()
+    {
+        this.InitializeComponent();
+    }
+    
+
+    protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+    {
+        var m_window = new MainWindow();
+        MainWindow = m_window;
+
+        m_window.Activate();
+
+        m_window.DispatcherQueue.TryEnqueue(() =>
+        {
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(m_window);
+            SetWindowPos(hwnd, HWND_TOP, 460, 0, 1000, 1030, SWP_NOZORDER);
+        });
     }
 }

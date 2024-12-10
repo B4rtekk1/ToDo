@@ -239,9 +239,13 @@ public sealed partial class MainPage : Page
         {
                 var uri = new Uri("https://github.com/B4rtekk1/ToDo/issues");
                 Windows.System.Launcher.LaunchUriAsync(uri).Wait();
-            
+        }
+        if (args.InvokedItem.ToString() == "Settings")
+        {
+            Frame.Navigate(typeof(SettingsPage));
         }
     }
+
 }
 
 

@@ -9,9 +9,8 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid CornerRadius="5">
-        
+
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -19,21 +18,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <NavigationView x:Name="nvSample9" Width="Auto" IsPaneOpen="True"
-                        PaneDisplayMode="Left" IsPaneToggleButtonVisible="False" 
-                        Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" CornerRadius="10"
-                        IsSettingsVisible="True" VerticalAlignment="Stretch" ItemInvoked="nvSample9_ItemInvoked">
-            <NavigationView.MenuItems>
-                <NavigationViewItem Content="Browse" Tag="SamplePage1" Icon="Library" />
-                <NavigationViewItem Content="Track an Order" Tag="SamplePage2" Icon="Map" />
-                <NavigationViewItem Content="Order History" Tag="SamplePage3" Icon="Tag" />
-            </NavigationView.MenuItems>
-            <NavigationView.FooterMenuItems>
-                <NavigationViewItem Content="Account" Tag="SamplePage4" Icon="Contact" />
-                <NavigationViewItem Content="Help" Tag="SamplePage5" Icon="Help"/>
-            </NavigationView.FooterMenuItems>
-            <Frame x:Name="contentFrame9" />
-        </NavigationView>
 
         <Grid Grid.Column="1" Grid.Row="1">
 

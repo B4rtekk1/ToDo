@@ -25,54 +25,28 @@ public sealed partial class MainWindow : Window
     public MainWindow()
     {
         this.InitializeComponent();
-        WindowSetup();
         MainFrame.Navigate(typeof(MainPage));
     }
-    private bool SetTitleBarColors(Microsoft.UI.Windowing.AppWindow m_AppWindow)
+
+    private void nvSample9_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
     {
-        // Check to see if customization is supported.
-        // The method returns true on Windows 10 since Windows App SDK 1.2,
-        // and on all versions of Windows App SDK on Windows 11.
-        if (Microsoft.UI.Windowing.AppWindowTitleBar.IsCustomizationSupported())
+        switch (args.InvokedItem.ToString())
         {
-            Microsoft.UI.Windowing.AppWindowTitleBar m_TitleBar = m_AppWindow.TitleBar;
+            case "Help":
+                var uri = new Uri("https://github.com/B4rtekk1/ToDo/issues");
+                Windows.System.Launcher.LaunchUriAsync(uri).Wait();
+                break;
+            case "Settings":
+                MainFrame.Navigate(typeof(SettingsPage));
+                break;
+            case "Tasks":
+                MainFrame.Navigate(typeof(MainPage));
+                break;
 
-            // Set active window colors.
-            // Note: No effect when app is running on Windows 10
-            // because color customization is not supported.
-            m_TitleBar.ForegroundColor = Colors.Black;
-            m_TitleBar.BackgroundColor = Color.FromArgb(80, 113, 40, 224);
-            m_TitleBar.ButtonForegroundColor = Colors.Black;
-            m_TitleBar.ButtonBackgroundColor = Color.FromArgb(80, 113, 40, 224);
-            m_TitleBar.ButtonHoverForegroundColor = Colors.Gainsboro;
-            m_TitleBar.ButtonHoverBackgroundColor = Color.FromArgb(100, 130, 46, 255);
-            m_TitleBar.ButtonPressedForegroundColor = Colors.Gray;
-            m_TitleBar.ButtonPressedBackgroundColor = Color.FromArgb(100, 130, 46, 255);
-
-            // Set inactive window colors.
-            // Note: No effect when app is running on Windows 10
-            // because color customization is not supported.
-            m_TitleBar.InactiveForegroundColor = Colors.Gainsboro;
-            m_TitleBar.InactiveBackgroundColor = Color.FromArgb(80, 113, 40, 224);
-            m_TitleBar.ButtonInactiveForegroundColor = Colors.Gainsboro;
-            m_TitleBar.ButtonInactiveBackgroundColor = Color.FromArgb(80, 113, 40, 224);
-
-            m_TitleBar.ForegroundColor = Colors.Black;
-
-            m_TitleBar.IconShowOptions = IconShowOptions.HideIconAndSystemMenu;
-            return true;
         }
-        return false;
     }
-    private void WindowSetup()
-    {
-        WindowManager.Get(this).IsMaximizable = true;
-        WindowManager.Get(this).Width = 800;
-        WindowManager.Get(this).Height = 800;
-        WindowManager.Get(this).IsResizable = true;
-        WindowManager.Get(this).WindowState = WindowState.Normal;
 
-    }
+
 }
 
 

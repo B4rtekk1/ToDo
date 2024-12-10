@@ -22,6 +22,7 @@
 		<None Remove="Assets\Background.jpg" />
 		<None Remove="Assets\ToDoBackground.jpg" />
 		<None Remove="MainPage.xaml" />
+		<None Remove="SettingsPage.xaml" />
 		<None Remove="TaskPage.xaml" />
 	</ItemGroup>
 
@@ -36,6 +37,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.Identity.Client" Version="4.66.2" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -58,6 +60,11 @@
 	  <Content Update="Assets\ToDoBackground.jpg">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="SettingsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 	<ItemGroup>
 		<Page Update="TaskPage.xaml">
