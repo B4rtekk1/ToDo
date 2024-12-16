@@ -11,6 +11,7 @@ using WinRT.Interop;
 using static System.Net.Mime.MediaTypeNames;
 using System.Collections.Generic;
 using Microsoft.UI.Xaml.Media.Imaging;
+using System.IO;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -25,7 +26,7 @@ public sealed partial class TaskPage : Page
     private TaskItem _task;
     private MainPage _mainPage;
     private Storyboard _storyboardTask, _storyboardDescription;
-    private readonly List<StorageFile> selectedFiles = new();
+    public static List<StorageFile> selectedFiles = new();
     
 
     public TaskPage()
@@ -48,7 +49,7 @@ public sealed partial class TaskPage : Page
         }
     }
 
-    private void LoadToForms(TaskItem task)
+    private async void LoadToForms(TaskItem task)
     {
         _task = task;
         TaskNameTextBox.Text = _task.Task;
@@ -64,6 +65,7 @@ public sealed partial class TaskPage : Page
                 break;
             }
         }
+        DisplayFiles();
     }
 
 
@@ -78,6 +80,10 @@ public sealed partial class TaskPage : Page
             taskTime = TaskTimePicker.SelectedDates[0].Date;
         }
         var taskCategory = (TaskCategoryComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+        if (taskCategory == null)
+        {
+            CategoryLabelErrorShow();
+        }
 
         if (string.IsNullOrEmpty(taskName) || string.IsNullOrEmpty(taskCategory) || string.IsNullOrEmpty(taskDescription))
         {
@@ -95,7 +101,7 @@ public sealed partial class TaskPage : Page
 
         MainPage.tasks.Remove(_task);
         MainPage.tasks.Add(newTask);
-        MainPage.SaveTasks();
+        MainPage.SaveTasks(selectedFiles);
         Frame.Navigate(typeof(MainPage));
     }
 
@@ -152,7 +158,6 @@ public sealed partial class TaskPage : Page
 
             TaskNameTextBox.BorderThickness = new Microsoft.UI.Xaml.Thickness(1);
             TaskNameTextBox.BorderBrush = null;
-            //ErrorMessage.Visibility = Visibility.Collapsed;
         }
     }
 
@@ -198,7 +203,6 @@ public sealed partial class TaskPage : Page
             _storyboardDescription.Begin();
 
             TaskDescriptionTextBox.BorderBrush = null;
-            //ErrorMessage.Visibility = Visibility.Collapsed;
         }
     }
 
@@ -259,6 +263,7 @@ public sealed partial class TaskPage : Page
 
         foreach (var file in selectedFiles)
         {
+            var filePath = file.Path;
             StackPanel filePanel = new StackPanel() { Orientation = Orientation.Horizontal, Margin = new Microsoft.UI.Xaml.Thickness(10) };
             var fileIcon = new Microsoft.UI.Xaml.Controls.Image { Width = 40, Height = 30, Margin = new Microsoft.UI.Xaml.Thickness(10) };
             var fileThumbnail = await file.GetThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.ListView);
@@ -275,6 +280,65 @@ public sealed partial class TaskPage : Page
             filePanel.Children.Add(fileName);
 
             FilesPanel.Children.Add(filePanel);
+        }
+    }
+
+    private void CategoryLabelErrorShow()
+    {
+        _storyboardDescription?.Stop();
+        if (TaskCategoryComboBox.SelectedItem != null)
+        {
+
+            DoubleAnimation fadeOutAnimation = new DoubleAnimation()
+            {
+                From = 1,
+                To = 0,
+                Duration = new Duration(TimeSpan.FromMilliseconds(350))
+            };
+            Storyboard.SetTarget(fadeOutAnimation, CategoryLabelError);
+            Storyboard.SetTargetProperty(fadeOutAnimation, "Opacity");
+
+            _storyboardTask = new Storyboard();
+            _storyboardTask.Children.Add(fadeOutAnimation);
+            _storyboardTask.Completed += (s, ev) => _storyboardTask = null;
+            _storyboardTask.Begin();
+        }
+        else if (CategoryLabelError.Opacity == 0)
+        {
+            DoubleAnimation fadeINAnimation = new DoubleAnimation()
+            {
+                From = 0,
+                To = 1,
+                Duration = new Duration(TimeSpan.FromMilliseconds(350))
+            };
+            Storyboard.SetTarget(fadeINAnimation, CategoryLabelError);
+            Storyboard.SetTargetProperty(fadeINAnimation, "Opacity");
+
+            _storyboardTask = new Storyboard();
+            _storyboardTask.Children.Add(fadeINAnimation);
+            _storyboardTask.Completed += (s, ev) => _storyboardTask = null;
+            _storyboardTask.Begin();
+        }
+    }
+
+    private void TaskCategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (TaskCategoryComboBox.SelectedItem != null && CategoryLabelError.Opacity==1)
+        {
+
+            DoubleAnimation fadeOutAnimation = new DoubleAnimation()
+            {
+                From = 1,
+                To = 0,
+                Duration = new Duration(TimeSpan.FromMilliseconds(350))
+            };
+            Storyboard.SetTarget(fadeOutAnimation, CategoryLabelError);
+            Storyboard.SetTargetProperty(fadeOutAnimation, "Opacity");
+
+            _storyboardTask = new Storyboard();
+            _storyboardTask.Children.Add(fadeOutAnimation);
+            _storyboardTask.Completed += (s, ev) => _storyboardTask = null;
+            _storyboardTask.Begin();
         }
     }
 

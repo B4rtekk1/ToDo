@@ -64,6 +64,7 @@
                 </ListView.ItemTemplate>
             </ListView>
 
+
             <Button x:Name="AddButton" Background="Transparent" Grid.Row="2" Grid.Column="1" Click="Button_Click" Margin="0, 20, 20, 20" CornerRadius="90" Height="48" Width="48" BorderThickness="0">
                 <FontIcon Glyph="&#xE710;"/>
             </Button>

@@ -34,7 +34,6 @@
             </NavigationView.MenuItems>
 
             <NavigationView.FooterMenuItems>
-                <NavigationViewItem Content="Account" Tag="AccountPage" Icon="Contact" />
                 <NavigationViewItem Content="Help" Tag="HelpPage" Icon="Help" />
                 <NavigationViewItem Content="Settings" Tag="SettingsPage" Icon="Setting" />
             </NavigationView.FooterMenuItems>

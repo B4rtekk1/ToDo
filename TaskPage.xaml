@@ -37,14 +37,16 @@
                     <CalendarView x:Name="TaskTimePicker" SelectionMode="Single" IsGroupLabelVisible="True" Language="en" CalendarIdentifier="GregorianCalendar"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Spacing="20">
-                    <ComboBox x:Name="TaskCategoryComboBox" Header="Category" Width="265" Margin="20, 0, 10, 0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+                    <StackPanel>
+                    <ComboBox x:Name="TaskCategoryComboBox" Header="Category" Width="265" Margin="20, 0, 10, 0" HorizontalContentAlignment="Center" SelectionChanged="TaskCategoryComboBox_SelectionChanged">
                         <ComboBoxItem Content="Work" />
                         <ComboBoxItem Content="Personal" />
                         <ComboBoxItem Content="Shopping" />
                         <ComboBoxItem Content="School"/>
                         <ComboBoxItem Content="Other" />
                     </ComboBox>
-                    <TextBlock x:Name="CategoryLabel" Text="Choose category" Foreground="Red" Margin="20, 0, 0, 0" FontSize="10"/>
+                    <TextBlock x:Name="CategoryLabelError" Text="Choose category" Foreground="Red" Margin="20, 0, 0, 0" FontSize="10" Opacity="0"/>
+                    </StackPanel>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10">
                         <Button x:Name="SaveTask" Background="Transparent" BorderThickness="0" Click="SaveTask_Click_1" Height="48" Width="48">

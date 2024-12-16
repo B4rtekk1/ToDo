@@ -106,22 +106,21 @@ public sealed partial class MainPage : Page
         LoadTasks();
     }
 
-    public static async void SaveTasks()
+    public static async void SaveTasks(List<StorageFile> selectedFiles1 = null)
     {
-
+        selectedFiles1 = TaskPage.selectedFiles;
         try
         {
             var jsonString = JsonConvert.SerializeObject(tasks, Newtonsoft.Json.Formatting.Indented);
             var file = await ApplicationData.Current.LocalFolder.CreateFileAsync(filePath, CreationCollisionOption.ReplaceExisting);
             await FileIO.WriteTextAsync(file, jsonString);
+
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"B³¹d zapisu do pliku: {ex.Message}");
         }
     }
-
-
 
     private async void LoadTasks()
     {
